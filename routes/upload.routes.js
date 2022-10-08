@@ -4,8 +4,8 @@ import { check } from 'express-validator';
 
 import { showImage, updateImage, updateImageCloudinary } from '../controllers/upload.controller.js';
 import { allowedCollections } from '../helpers/db-validators.js';
-import validateFields from '../middlewares/validate-fields.js';
-import validateFiles from '../middlewares/validate-files.js';
+import { validateFields } from '../middlewares/validate-fields.js';
+import { validateFiles } from '../middlewares/validate-files.js';
 
 export const uploadRouter = Router(); // Instance of router from express.
 

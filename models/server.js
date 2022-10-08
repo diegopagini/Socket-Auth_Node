@@ -2,6 +2,8 @@
 import cors from 'cors';
 import express from 'express';
 import fileUpload from 'express-fileupload';
+import { createServer } from 'http';
+import { Server as Socket } from 'socket.io';
 
 import { dbConnection } from '../database/config.db.js';
 import { authRouter } from '../routes/auth.routes.js';
@@ -10,11 +12,14 @@ import { productsRouter } from '../routes/products.routes.js';
 import { searchRouter } from '../routes/search.routes.js';
 import { uploadRouter } from '../routes/upload.routes.js';
 import { userRouter } from '../routes/users.routes.js';
+import { socketController } from '../sockets/controller.socket.js';
 
 export class Server {
 	constructor() {
 		this.app = express();
 		this.port = process.env.PORT;
+		this.server = createServer(this.app);
+		this.io = new Socket(this.server);
 
 		this.paths = {
 			auth: '/api/auth',
@@ -31,6 +36,8 @@ export class Server {
 		this.middlewares();
 		// Routes
 		this.routes();
+		// Sockets
+		this.sockets();
 	}
 
 	async dbConnect() {
@@ -75,5 +82,12 @@ export class Server {
 		this.app.listen(this.port, () => {
 			console.log(`server running in port: ${this.port}`);
 		});
+	}
+
+	/**
+	 * Sockets events.
+	 */
+	sockets() {
+		this.io.on('connection', socketController);
 	}
 }

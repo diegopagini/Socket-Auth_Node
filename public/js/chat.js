@@ -1,0 +1,3 @@
+/** @format */
+
+const socket = io();

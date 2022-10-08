@@ -75,3 +75,13 @@ export const googleSignIn = async (req = request, res = response) => {
 		});
 	}
 };
+
+export const renewToken = async (req = request, res = response) => {
+	const { user } = req;
+	const token = await generateJWT(user.id);
+
+	return res.json({
+		user,
+		token,
+	});
+};

@@ -2,8 +2,9 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 
-import { googleSignIn, login } from '../controllers/auth.controller.js';
+import { googleSignIn, login, renewToken } from '../controllers/auth.controller.js';
 import { validateFields } from '../middlewares/validate-fields.js';
+import { validateJWT } from '../middlewares/validate-jwt.js';
 
 export const authRouter = Router(); // Instance of router from express.
 
@@ -22,3 +23,5 @@ authRouter.post(
 	[check('id_token', 'Google TOken is required').not().isEmpty(), validateFields],
 	googleSignIn
 );
+
+authRouter.get('/', [validateJWT], renewToken);

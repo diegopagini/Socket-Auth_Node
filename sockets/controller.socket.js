@@ -1,5 +1,8 @@
 /** @format */
-import { Socket } from 'socket.io';
+import { checkJWT } from '../helpers/jwt';
 
+export const socketController = async (socket) => {
+	const user = await checkJWT(socket.handshake.headers['x-token']);
 
-export const socketController = (socket = new Socket()) => {};
+	if (!user) return socket.disconnect();
+};

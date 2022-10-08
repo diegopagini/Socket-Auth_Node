@@ -13,6 +13,7 @@ function handleCredentialResponse(response) {
 		.then((resp) => resp.json())
 		.then(({ token }) => {
 			localStorage.setItem('token', token);
+			window.location = 'chat.html';
 		})
 		.catch(console.warn);
 }
@@ -48,6 +49,7 @@ myForm.addEventListener('submit', (event) => {
 			if (msg) return console.error(msg);
 
 			localStorage.setItem('token', token);
+			window.location = 'chat.html';
 		})
 		.catch(console.warn);
 });

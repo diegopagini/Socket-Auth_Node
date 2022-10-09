@@ -45,9 +45,28 @@ const connectSocket = async () => {
 
 	socket.on('recibir-mensajes', () => {});
 
-	socket.on('usuarios-activos', () => {});
+	// socket.on('usuarios-activos', (payload) => {
+	// 	printUsers(payload);
+	// });
+	socket.on('usuarios-activos', printUsers); // Shorter version.
 
 	socket.on('mensaje-privado', () => {});
+};
+
+const printUsers = (users = []) => {
+	let usersHtml = '';
+	user.forEach(({ name, uid }) => {
+		usersHtml += `
+		<li>
+			<p>
+				<h5 class="text-success"> ${name} </h5>
+				<span class="fs-6 text-muted">${uid}</span>
+			</p>
+		</li>
+		`;
+	});
+
+	ulUsers.innerHTML = usersHtml;
 };
 
 const main = async () => {

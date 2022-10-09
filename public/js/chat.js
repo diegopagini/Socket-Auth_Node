@@ -1,5 +1,13 @@
 /** @format */
 
+// HTML References
+
+const txtUid = document.querySelector('#txtUid');
+const txtMsg = document.querySelector('#txtMsg');
+const ulUsers = document.querySelector('#ulUsers');
+const ulMensajes = document.querySelector('#ulMensajes');
+const btnSalir = document.querySelector('#btnSalir');
+
 let user = null;
 let socket = null;
 
@@ -24,11 +32,22 @@ const validateJWT = async () => {
 };
 
 const connectSocket = async () => {
-	const socket = io({
+	socket = io({
 		extraHeaders: {
 			'x-token': localStorage.getItem('token'),
 		},
 	});
+
+	// Listenners:
+	socket.on('connect', () => {});
+
+	socket.on('disconnect', () => {});
+
+	socket.on('recibir-mensajes', () => {});
+
+	socket.on('usuarios-activos', () => {});
+
+	socket.on('mensaje-privado', () => {});
 };
 
 const main = async () => {

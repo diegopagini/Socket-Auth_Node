@@ -43,19 +43,23 @@ const connectSocket = async () => {
 
 	socket.on('disconnect', () => {});
 
-	socket.on('recibir-mensajes', () => {});
+	socket.on('recibir-mensajes', (payload) => {
+		printMessages(payload);
+	});
 
 	// socket.on('usuarios-activos', (payload) => {
 	// 	printUsers(payload);
 	// });
 	socket.on('usuarios-activos', printUsers); // Shorter version.
 
-	socket.on('mensaje-privado', () => {});
+	socket.on('mensaje-privado', ({ from, msg }) => {
+		console.log(from, msg);
+	});
 };
 
 const printUsers = (users = []) => {
 	let usersHtml = '';
-	user.forEach(({ name, uid }) => {
+	users.forEach(({ name, uid }) => {
 		usersHtml += `
 		<li>
 			<p>
@@ -68,6 +72,35 @@ const printUsers = (users = []) => {
 
 	ulUsers.innerHTML = usersHtml;
 };
+
+const printMessages = (messages = []) => {
+	let messagesHtml = '';
+	messages.forEach(({ name, message }) => {
+		messagesHtml += `
+		<li>
+			<p>
+				<span class="text-primary"> ${name}: </span>
+				<span>${message}</span>
+			</p>
+		</li>
+		`;
+	});
+
+	ulMensajes.innerHTML = messagesHtml;
+};
+
+txtMsg.addEventListener('keyup', ({ keyCode }) => {
+	// keyCode 13 == "enter".
+	if (keyCode !== 13) return null;
+
+	const msg = txtMsg.value;
+
+	if (msg.length === 0) return null;
+
+	socket.emit('enviar-mensaje', { msg, uid });
+
+	txtMsg.value = '';
+});
 
 const main = async () => {
 	await validateJWT();
